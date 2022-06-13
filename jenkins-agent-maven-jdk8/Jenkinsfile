@@ -7,18 +7,20 @@ pipeline {
       NEXUS_IMAGE_TAG = "latest"
   }
   stages {
-    stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -t ${NEXUS_DOCKER_REPOSITORY_URL}/${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG} jenkins-agent-maven-jdk8/'
-      }
-    }
+    //stage('Docker Build') {
+    //  agent any
+    //  steps {
+    //    sh 'docker build -t ${NEXUS_DOCKER_REPOSITORY_URL}/${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG} jenkins-agent-maven-jdk8/'
+    //  }
+    //}
     stage('Docker Push') {
       agent any
       steps {
-        withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NexusPassword', usernameVariable: 'NexusUser')]) {
-          sh "docker login ${NEXUS_REGISTRY_URL} -u ${env.NexusUser} -p ${env.NexusPassword}"
-          sh 'docker push ${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}'
+          docker.withRegistry('${NEXUS_REGISTRY_URL}', nexus-credentials) {
+            def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f Dockerfile jenkins-agent-maven-jdk8/")
+            image.push()
+          //sh "docker login ${NEXUS_REGISTRY_URL} -u ${env.NexusUser} -p ${env.NexusPassword}"
+          //sh 'docker push ${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}'
         }
       }
     }

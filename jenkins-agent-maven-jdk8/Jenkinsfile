@@ -1,7 +1,7 @@
 pipeline {
   agent none
   environment {
-      NEXUS_REGISTRY_URL = "nexus:5000"
+      NEXUS_REGISTRY_URL = "http://nexus:5000"
       NEXUS_DOCKER_REPOSITORY_URL = "${NEXUS_REGISTRY_URL}/repository/docker-internal"
       NEXUS_IMAGE_NAME = "docker-internal/jenkins-agents/jenkins-agent-jdk8"
       NEXUS_IMAGE_TAG = "latest"

@@ -16,12 +16,14 @@ pipeline {
     stage('Docker Push') {
       agent any
       steps {
-          docker.withRegistry('${NEXUS_REGISTRY_URL}', nexus-credentials) {
-            def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f Dockerfile jenkins-agent-maven-jdk8/")
-            image.push()
+          script {
+            docker.withRegistry('${NEXUS_REGISTRY_URL}', nexus-credentials) {
+              def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f Dockerfile jenkins-agent-maven-jdk8/")
+              image.push()
           //sh "docker login ${NEXUS_REGISTRY_URL} -u ${env.NexusUser} -p ${env.NexusPassword}"
           //sh 'docker push ${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}'
-        }
+            }
+          }
       }
     }
   }

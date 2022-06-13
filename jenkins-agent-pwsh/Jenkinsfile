@@ -1,7 +1,7 @@
 pipeline {
   agent none
   environment {
-      def nexus_container_ip = sh(script: 'docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nexus', returnStdout: true)
+      def nexus_container_ip = sh(script: 'docker inspect -f "{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}" nexus', returnStdout: true)
       NEXUS_REGISTRY_URL = "$nexus_container_ip:5000"
       NEXUS_DOCKER_REPOSITORY_URL = "${NEXUS_REGISTRY_URL}/repository/docker-internal"
       NEXUS_IMAGE_NAME = "docker-internal/jenkins-agents/jenkins-agent-pwsh"

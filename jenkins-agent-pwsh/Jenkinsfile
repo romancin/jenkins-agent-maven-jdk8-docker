@@ -10,7 +10,7 @@ pipeline {
       steps {
           script {
               def nexus_container_ip = sh(script: 'docker inspect -f "{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}" nexus', returnStdout: true)
-              def nexus_registry_url = "$nexus_container_ip/$env.NEXUS_IMAGE_NAME"
+              def nexus_registry_url = "http://$nexus_container_ip/$env.NEXUS_IMAGE_NAME"
             docker.withRegistry("$nexus_registry_url", 'nexus-credentials') {
               def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "jenkins-agent-pwsh/")
               image.push()

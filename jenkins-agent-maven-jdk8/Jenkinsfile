@@ -18,11 +18,14 @@ pipeline {
       agent any
       steps {
           script {
-            writeFile file:"/etc/docker/daemon.json", text: "{
+            //def docker_daemon = "\\"insecure-registries\\": [\n\\"${NEXUS_REGISTRY_URL}\\"\n]"
+            def docker_daemon =
+                      '''{
                             "insecure-registries": [
                                "${NEXUS_REGISTRY_URL}"
                             ]
-                      }"
+                      }'''
+            writeFile file:"/etc/docker/daemon.json", text: docker_daemon
             docker.withRegistry("${NEXUS_REGISTRY_URL}", 'nexus-credentials') {
               def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f Dockerfile jenkins-agent-maven-jdk8/")
               image.push()

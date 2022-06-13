@@ -17,7 +17,7 @@ pipeline {
       agent any
       steps {
         withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NexusPassword', usernameVariable: 'NexusUser')]) {
-          sh "docker login -u ${env.NexusUser} -p ${env.NexusPassword}"
+          sh "docker login ${NEXUS_REGISTRY_URL} -u ${env.NexusUser} -p ${env.NexusPassword}"
           sh 'docker push ${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}'
         }
       }

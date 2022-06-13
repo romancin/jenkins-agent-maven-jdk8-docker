@@ -27,7 +27,7 @@ pipeline {
             writeFile file:"/etc/docker/daemon.json", text: docker_daemon
             sh "cat /etc/docker/daemon.json"*/
             docker.withRegistry("${NEXUS_REGISTRY_URL}", 'nexus-credentials') {
-              def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f Dockerfile jenkins-agent-maven-jdk8/")
+              def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f jenkins-agent-maven-jdk8/Dockerfile")
               image.push()
             }
           }

@@ -1,7 +1,7 @@
 pipeline {
   agent none
   environment {
-      NEXUS_REGISTRY_URL = "http://nexus:5001"
+      NEXUS_REGISTRY_URL = "http://172.29.4.6:5000"
       NEXUS_DOCKER_REPOSITORY_URL = "${NEXUS_REGISTRY_URL}/repository/docker-internal"
       NEXUS_IMAGE_NAME = "docker-internal/jenkins-agents/jenkins-agent-jdk8"
       NEXUS_IMAGE_TAG = "latest"
@@ -18,20 +18,17 @@ pipeline {
       agent any
       steps {
           script {
-            //def docker_daemon = "\\"insecure-registries\\": [\n\\"${NEXUS_REGISTRY_URL}\\"\n]"
-            def docker_daemon =
+            /*def docker_daemon =
                       '''{
                             "insecure-registries": [
                                "http://nexus:5001"
                             ]
                       }'''
             writeFile file:"/etc/docker/daemon.json", text: docker_daemon
-            sh "cat /etc/docker/daemon.json"
+            sh "cat /etc/docker/daemon.json"*/
             docker.withRegistry("${NEXUS_REGISTRY_URL}", 'nexus-credentials') {
               def image = docker.build("${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}", "-f Dockerfile jenkins-agent-maven-jdk8/")
               image.push()
-          //sh "docker login ${NEXUS_REGISTRY_URL} -u ${env.NexusUser} -p ${env.NexusPassword}"
-          //sh 'docker push ${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG}'
             }
           }
       }

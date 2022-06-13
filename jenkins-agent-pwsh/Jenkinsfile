@@ -9,7 +9,7 @@ pipeline {
       agent any
       steps {
           script {
-              def nexus_container_ip = sh(script: 'docker inspect -f "{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}" nexus', returnStdout: true)
+              def nexus_container_ip = sh(script: 'docker inspect -f "{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}" nexus', returnStdout: true).trim()
               def nexus_registry_url = "http://$nexus_container_ip/$env.NEXUS_IMAGE_NAME"
               sh "echo $nexus_registry_url"
             docker.withRegistry("$nexus_registry_url", 'nexus-credentials') {

@@ -1,7 +1,8 @@
 pipeline {
   agent none
   environment {
-      NEXUS_DOCKER_REPOSITORY_URL = "nexus-registry.computeboxapps.familiamc.es/repository/docker-internal"
+      NEXUS_REGISTRY_URL = "nexus-registry.computeboxapps.familiamc.es"
+      NEXUS_DOCKER_REPOSITORY_URL = "${NEXUS_REGISTRY_URL}/repository/docker-internal"
       NEXUS_IMAGE_NAME = "docker-internal/jenkins-agents/jenkins-agent-jdk8"
       NEXUS_IMAGE_TAG = "latest"
   }

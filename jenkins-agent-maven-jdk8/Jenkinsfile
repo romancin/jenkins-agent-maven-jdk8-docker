@@ -22,7 +22,7 @@ pipeline {
             def docker_daemon =
                       '''{
                             "insecure-registries": [
-                               "${NEXUS_REGISTRY_URL}"
+                               "http://nexus:5001"
                             ]
                       }'''
             writeFile file:"/etc/docker/daemon.json", text: docker_daemon

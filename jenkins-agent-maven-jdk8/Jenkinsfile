@@ -9,7 +9,7 @@ pipeline {
     stage('Docker Build') {
       agent any
       steps {
-        sh 'docker build -t ${NEXUS_DOCKER_REPOSITORY_URL}/${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG} .'
+        sh 'docker build -t ${NEXUS_DOCKER_REPOSITORY_URL}/${NEXUS_IMAGE_NAME}:${NEXUS_IMAGE_TAG} jenkins-agent-maven-jdk8/Dockerfile'
       }
     }
     stage('Docker Push') {
